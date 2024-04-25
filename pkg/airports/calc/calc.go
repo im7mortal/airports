@@ -14,6 +14,7 @@ func (m *Metadata) String() string {
 }
 
 var InvalidSequence = errors.New("invalid sequence")
+var NotEnoughData = errors.New("not enough data")
 
 func ProcessFlights(flights [][]string) ([]string, error) {
 	var findOrig, findDest string
@@ -37,14 +38,14 @@ func ProcessFlights(flights [][]string) ([]string, error) {
 			m[destin].Destination += 1
 		}
 	}
-	fmt.Printf("%v\n", m)
+	//fmt.Printf("%v\n", m)
 	for k, v := range m {
 		// if sum is odd then we have origin or destination
 		if (v.Origin+v.Destination)%2 == 1 {
 			// if sum is bigger than 1 then we have a loop, in this case we choose even number
 			if v.Origin+v.Destination > 1 {
 				if v.Origin%2 == 0 {
-					fmt.Println(k)
+					//fmt.Println(k)
 					if findOrig != "" {
 						return nil, InvalidSequence
 					} else {
@@ -60,7 +61,7 @@ func ProcessFlights(flights [][]string) ([]string, error) {
 				}
 			} else {
 				if v.Origin%2 == 1 {
-					fmt.Println(k)
+					//fmt.Println(k)
 					if findOrig != "" {
 						return nil, InvalidSequence
 					} else {
@@ -76,6 +77,11 @@ func ProcessFlights(flights [][]string) ([]string, error) {
 				}
 			}
 		}
+	}
+
+	// It's a ring
+	if findOrig == "" && findDest == "" {
+		return nil, NotEnoughData
 	}
 
 	return []string{findOrig, findDest}, nil
