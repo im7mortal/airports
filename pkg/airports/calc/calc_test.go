@@ -22,6 +22,7 @@ func TestProcessFlights(t *testing.T) {
 		// Loop. Imagine we have need from Paris to SaoPaolo. And we have cheap flight from Paris to Berlin and from Berlin to SaoPaolo with stop in Paris
 		{"Test Case 5.1", [][]string{{"SFO", "ATL"}, {"ATL", "SFO"}, {"SFO", "GRU"}}, []string{"SFO", "GRU"}, nil},
 		{"Test Case 5.2", [][]string{{"SFO", "ATL"}, {"ATL", "BIR"}, {"BIR", "SFO"}, {"SFO", "GRU"}}, []string{"SFO", "GRU"}, nil},
+		{"Test Case 5.3", [][]string{{"IND", "EWR"}, {"SFO", "ATL"}, {"GSO", "IND"}, {"IND", "GSO"}, {"GSO", "IND"}, {"ATL", "GSO"}}, []string{"SFO", "EWR"}, nil},
 
 		// NO SOLUTION. It's infinite loop; We can't say where is origin and destination
 		{"Test Case 6", [][]string{{"SFO", "ATL"}, {"ATL", "SFO"}}, nil, NotEnoughData},
