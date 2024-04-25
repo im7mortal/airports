@@ -20,13 +20,6 @@ func ProcessFlights(flights [][]string) ([]string, error) {
 	var findOrig, findDest string
 	m := map[string]*Metadata{}
 
-	destCandidates := map[string]*Metadata{}
-	origCandidates := map[string]*Metadata{}
-
-	var exist bool
-	var dest *Metadata
-	var orig *Metadata
-
 	for i := range flights {
 
 		// let it panic if input is invalid
@@ -34,41 +27,56 @@ func ProcessFlights(flights [][]string) ([]string, error) {
 		origin := flights[i][0]
 		destin := flights[i][1]
 
-		if orig, exist = m[origin]; !exist {
-			orig = &Metadata{}
-			m[origin] = orig
-		}
-
-		(*orig).Origin++
-
-		if ((*orig).Origin+(*orig).Destination)%2 == 1 && (*orig).Origin%2 == 0 {
-			origCandidates[origin] = orig
+		if _, exist := m[origin]; !exist {
+			m[origin] = &Metadata{Origin: 1}
 		} else {
-			delete(origCandidates, origin)
+			m[origin].Origin += 1
 		}
-
-		if dest, exist = m[origin]; !exist {
-			dest = &Metadata{}
-			m[destin] = dest
-		}
-
-		(*dest).Destination++
-
-		if ((*dest).Origin+(*dest).Destination)%2 == 1 && (*dest).Destination%2 == 0 {
-			destCandidates[destin] = dest
+		if _, exist := m[destin]; !exist {
+			m[destin] = &Metadata{Destination: 1}
 		} else {
-			delete(destCandidates, destin)
+			m[destin].Destination += 1
 		}
-
 	}
-
-	if len(destCandidates) > 1 || len(origCandidates) > 1 {
-		return nil, InvalidSequence
-	}
-
-	for findDest = range destCandidates {
-	}
-	for findOrig = range origCandidates {
+	//fmt.Printf("%v\n", m)
+	for k, v := range m {
+		// if sum is odd then we have origin or destination
+		if (v.Origin+v.Destination)%2 == 1 {
+			// if sum is bigger than 1 then we have a loop, in this case we choose even number
+			if v.Origin+v.Destination > 1 {
+				if v.Origin%2 == 0 {
+					//fmt.Println(k)
+					if findOrig != "" {
+						return nil, InvalidSequence
+					} else {
+						findOrig = k
+					}
+				}
+				if v.Destination%2 == 0 {
+					if findDest != "" {
+						return nil, InvalidSequence
+					} else {
+						findDest = k
+					}
+				}
+			} else {
+				if v.Origin%2 == 1 {
+					//fmt.Println(k)
+					if findOrig != "" {
+						return nil, InvalidSequence
+					} else {
+						findOrig = k
+					}
+				}
+				if v.Destination%2 == 1 {
+					if findDest != "" {
+						return nil, InvalidSequence
+					} else {
+						findDest = k
+					}
+				}
+			}
+		}
 	}
 
 	// It's a ring
