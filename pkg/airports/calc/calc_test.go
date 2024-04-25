@@ -19,7 +19,8 @@ func TestProcessFlights(t *testing.T) {
 		//{"Test Case 4", [][]string{{"IND", "EWR"}, {"SFO", "ATL"}, {"SFO", "GTO"}, {"GSO", "IND"}, {"ATL", "GSO"}}, []string{"SFO", "EWR"}},
 
 		// Loop. Imagine we have need from Paris to SaoPaolo. And we have cheap flight from Paris to Berlin and from Berlin to SaoPaolo with stop in Paris
-		//{"Test Case 4", [][]string{{"SFO", "ATL"}, {"ATL", "SFO"}, {"SFO", "GRU"}}, []string{"SFO", "GRU"}},
+		{"Test Case 4.1", [][]string{{"SFO", "ATL"}, {"ATL", "SFO"}, {"SFO", "GRU"}}, []string{"SFO", "GRU"}},
+		{"Test Case 4.2", [][]string{{"SFO", "ATL"}, {"ATL", "BIR"}, {"BIR", "SFO"}, {"SFO", "GRU"}}, []string{"SFO", "GRU"}},
 
 		// NO SOLUTION. It's infinite loop; We can't say where is origin and destination
 		//{"Test Case 4", [][]string{{"SFO", "ATL"}, {"ATL", "SFO"}}, []string{}},

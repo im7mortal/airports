@@ -39,21 +39,40 @@ func ProcessFlights(flights [][]string) ([]string, error) {
 	}
 	fmt.Printf("%v\n", m)
 	for k, v := range m {
+		// if sum is odd then we have origin or destination
 		if (v.Origin+v.Destination)%2 == 1 {
-
-			if v.Origin%2 == 1 {
-				fmt.Println(k)
-				if findOrig != "" {
-					return nil, InvalidSequence
-				} else {
-					findOrig = k
+			// if sum is bigger than 1 then we have a loop, in this case we choose even number
+			if v.Origin+v.Destination > 1 {
+				if v.Origin%2 == 0 {
+					fmt.Println(k)
+					if findOrig != "" {
+						return nil, InvalidSequence
+					} else {
+						findOrig = k
+					}
 				}
-			}
-			if v.Destination%2 == 1 {
-				if findDest != "" {
-					return nil, InvalidSequence
-				} else {
-					findDest = k
+				if v.Destination%2 == 0 {
+					if findDest != "" {
+						return nil, InvalidSequence
+					} else {
+						findDest = k
+					}
+				}
+			} else {
+				if v.Origin%2 == 1 {
+					fmt.Println(k)
+					if findOrig != "" {
+						return nil, InvalidSequence
+					} else {
+						findOrig = k
+					}
+				}
+				if v.Destination%2 == 1 {
+					if findDest != "" {
+						return nil, InvalidSequence
+					} else {
+						findDest = k
+					}
 				}
 			}
 		}
