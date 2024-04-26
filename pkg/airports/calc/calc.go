@@ -1,3 +1,4 @@
+// Created by Petr Lozhkin
 package calc
 
 import (
